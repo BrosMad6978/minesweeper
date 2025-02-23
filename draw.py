@@ -1,6 +1,14 @@
 import pygame
 
-def draw_text(surface, text, size, x, y, color=(255, 255, 255)):
+
+def draw_text(
+    surface: pygame.Surface,
+    text: str,
+    size: int,
+    x: int,
+    y: int,
+    color: tuple[int, int, int] = (255, 255, 255),
+):
     """
     Draw text on the screen
 
@@ -18,12 +26,11 @@ def draw_text(surface, text, size, x, y, color=(255, 255, 255)):
     surface.blit(text_surface, text_rect)
 
 
-CARD_WIDTH = 120
-CARD_HEIGHT = 200
-CARD_BORDER = 15
-
-
-def draw_transparent_rect(surface, color_with_alpha, rect):
+def draw_rect(
+    surface: pygame.Surface,
+    color_with_alpha: tuple[int, int, int, int],
+    rect: pygame.Rect | tuple[int, int, int, int],
+):
     """
     Draw a transparent rectangle with borders
     surface: pygame surface to draw on
