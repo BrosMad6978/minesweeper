@@ -1,5 +1,6 @@
 import pygame
-
+from minesweeper import Minesweeper
+from draw import draw_rect
 # Initialize Pygame
 pygame.init()
 
@@ -17,3 +18,13 @@ GREEN = (55, 151, 17)  # Slimy Green
 YELLOW = (236, 212, 7)  # Safety Yellow
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+
+class Minesweeper2D(Minesweeper):
+
+    def __init__(self):
+        super().__init__()
+        self.init_game()
+
+    def render_board(self):
+        ...
+

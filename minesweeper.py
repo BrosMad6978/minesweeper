@@ -1,5 +1,6 @@
 import random
 
+
 class Minesweeper:
     def __init__(self):
         self.rows = 4
@@ -46,10 +47,10 @@ class Minesweeper:
 
     def reveal_cell(self, row, col):
         """Reveal the selected cell."""
-        if self.visible_board[row][col] != '?':
+        if self.visible_board[row][col] != "?":
             return  # Already revealed or flagged
         if self.game_board[row][col] == -1:
-            self.visible_board[row][col] = '*'
+            self.visible_board[row][col] = "*"
         else:
             self.visible_board[row][col] = str(self.game_board[row][col])
 
@@ -57,7 +58,10 @@ class Minesweeper:
         """Check if all non-mine cells are revealed."""
         for row in range(self.rows):
             for col in range(self.cols):
-                if self.game_board[row][col] != -1 and self.visible_board[row][col] == '?':
+                if (
+                    self.game_board[row][col] != -1
+                    and self.visible_board[row][col] == "?"
+                ):
                     return False
         return True
 
@@ -68,7 +72,15 @@ class Minesweeper:
         print("2: Easy Mode")
         print("3: Medium Mode")
         print("4: Hard Mode")
-        print("You can press Ctrl+C anytime to quit the game. (Windows players, it works, don't worry.)")
+        print(
+            "You can press Ctrl+C anytime to quit the game. (Windows players, it works, don't worry.)"
+        )
+
+    def init_game(self):
+        self.game_board = self.create_board(self.rows, self.cols)
+        self.visible_board = [["?" for _ in range(self.cols)] for _ in range(self.rows)]
+        self.place_mines(self.game_board, self.mines)
+        self.update_board_numbers(self.game_board)
 
     def play(self):
         """The main game loop."""
@@ -76,40 +88,43 @@ class Minesweeper:
             self.menu()  # Display the menu
             mode = input("Enter the number for mode (1/2/3/4): ").strip()
 
-            if mode == '1':
+            if mode == "1":
                 self.rows, self.cols, self.mines = 4, 4, 2
-            elif mode == '2':
+            elif mode == "2":
                 self.rows, self.cols, self.mines = 10, 10, 20
-            elif mode == '3':
+            elif mode == "3":
                 self.rows, self.cols, self.mines = 23, 23, 106
-            elif mode == '4':
+            elif mode == "4":
                 self.rows, self.cols, self.mines = 50, 50, 500
             else:
                 print("Invalid mode choice. Defaulting to Tutorial Mode.")
                 self.rows, self.cols, self.mines = 4, 4, 2
 
-            self.game_board = self.create_board(self.rows, self.cols)
-            self.visible_board = [['?' for _ in range(self.cols)] for _ in range(self.rows)]
-            self.place_mines(self.game_board, self.mines)
-            self.update_board_numbers(self.game_board)
+            self.init_game()
 
             # Tutorial Mode message
             if self.rows == 4 and self.cols == 4:
-                print("Welcome to Tutorial Mode! This is a small 4x4 board with only 2 mines.")
+                print(
+                    "Welcome to Tutorial Mode! This is a small 4x4 board with only 2 mines."
+                )
                 print("Try to reveal all cells without stepping on a mine. Good luck!")
 
             # Warning message for the player
-            print("WARNING: The grid uses 0-based indexing. The top-left corner is (0, 0).")
+            print(
+                "WARNING: The grid uses 0-based indexing. The top-left corner is (0, 0)."
+            )
 
             while True:
                 self.print_board()
 
                 # Get player input
-                user_input = input("Enter your move (e.g. R,1,2 to reveal or M,1,2 to mark): ").strip()
+                user_input = input(
+                    "Enter your move (e.g. R,1,2 to reveal or M,1,2 to mark): "
+                ).strip()
 
-                if user_input.lower().startswith('r'):
+                if user_input.lower().startswith("r"):
                     try:
-                        _, row, col = user_input.split(',')
+                        _, row, col = user_input.split(",")
                         row, col = int(row), int(col)
                     except ValueError:
                         print("Invalid input. Please enter in the format (R,row,col).")
@@ -132,9 +147,9 @@ class Minesweeper:
                         self.print_board()
                         break
 
-                elif user_input.lower().startswith('m'):
+                elif user_input.lower().startswith("m"):
                     try:
-                        _, row, col = user_input.split(',')
+                        _, row, col = user_input.split(",")
                         row, col = int(row), int(col)
                     except ValueError:
                         print("Invalid input. Please enter in the format (M,row,col).")
@@ -147,13 +162,14 @@ class Minesweeper:
                     # Mark or unmark with 'F' as a flag
                     if (row, col) not in self.flags:
                         self.flags.add((row, col))
-                        self.visible_board[row][col] = 'F'  # Flag the cell
+                        self.visible_board[row][col] = "F"  # Flag the cell
                     else:
                         self.flags.remove((row, col))
-                        self.visible_board[row][col] = '?'  # Unflag the cell
+                        self.visible_board[row][col] = "?"  # Unflag the cell
 
                 else:
                     print("Invalid input. Please use 'R' to reveal or 'M' to mark.")
+
 
 if __name__ == "__main__":
     game = Minesweeper()
